@@ -143,10 +143,10 @@ Number.isInteger(1) // true
 //    63,  255, 1*10^50, 0.026
 // Numbers have methods too, but if you want to use them directly, you need to make it clear
 // that the . is not a decimal point.
-myNumber.toExponential() // 1e+2
-100..toExponential()     // 1e+2
-(5).toString();          // "5"
-Math.PI.toFixed(4);      // 3.1416
+// myNumber.toExponential() // 1e+2
+// (100).toExponential()     // 1e+2
+// (5).toString();          // "5"
+// Math.PI.toFixed(4);      // 3.1416
 
 // Arithmetic operations;
 2 + 2; // 4
