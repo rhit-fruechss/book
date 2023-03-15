@@ -237,3 +237,127 @@ NaN === NaN            // false - NaN is a weird edge case that isn't equal to i
 2 < 1 // false
 1 < 1 // false
 1 <= 1 // true
+
+// Arrays - ordered list of values
+const myArray = [1, 2, 3];
+const emptyArray = [];
+const anotherEmptyArray = new Array();
+typeof myArray // object
+myArray[0] // 1
+myArray[1] // 2
+myArray[3] // undefined, can assign
+myArray[3] = 4;
+delete myArray[0]; // deletes first item from myArray (1), returns true if successful
+
+// Destructuring arrays:
+const destructureMe = ["first", "second", "third", "fourth"];
+const [scn, thr] = destructureMe[1,2];
+console.log(scn) // second
+console.log(thr) // third
+// Can swap variables this way
+let x = 1, y = 2;
+[x,y] = [y,x]; // Now x = 2, y = 1
+
+// Properties and methods
+const properties = ["My", "word", "list", 1234]; // Note: you can mix types in arrays
+properties.length; // 4
+properties.length = 3; // this is MUTABLE apparently, properties = ["My", "word", "list"]
+properties.pop(); // "list" - also removes last item from the list
+properties.shift(); // "my" - also removes first item from the list
+properties.push("list"); // adds "list" at the end, returns new length (2)
+properties.push("My"); // adds "My" at the beginning, returns new length (3)
+properties.concat(["with", "more", "words"]); // ["My", "word", "list", "with", "more", "words", "here"]
+// Note: the above example doesn't modify the list
+properties = [...properties, ...["with", "more", "words"]]; // another concatenation, reassigns list
+properties.join() // "My, word, list, with, more, words", anything in parentheses = use that instead of ", "
+
+// Slicing & Splicing
+properties.slice(1, 3); // elements 1 (inclusive) to 3 (exclusive): ["word", "list"]
+properties.splice(3, 6, "yay"); // replaces ["with", "more", "words"] with "yay", return words replaced
+properties.reverse(); // modifies array - ["yay", "list", "word", "my"]
+properties.sort() // ["list", "my", "word", "yay"] sorts alphabetically (yes, this includes numbers... thanks, Javascript)
+properties.indexOf("yay") // 3
+
+// 2D arrays - array of arrays
+const matrix = [[0,1,2],
+                [3,4,5],
+                [6,7,8]];
+matrix[0][0] // 0 - first array's first item
+const flattened = [...matrix[0], ...matrix[1], ...matrix[2]];
+
+// Sets (like mathematical sets)
+const mySet = new Set();
+mySet.add(2).add(3).add(5).add(7) // Set is now {2, 3, 5, 7}
+const setFromArray = new Set(["my","set","elements","for","my","set"]); // Note: duplicates are removed
+// Set methods
+setFromArray.has("my") // true - "my" in setFromArray
+setFromArray.size(); // 4 - remember that duplicates are removed
+setFromArray.delete("for"); // true -> {"my", "set", "elements"} 
+const arrayFromSet = [...setFromArray]; // or Array.from(setFromArray);
+// Remove duplicates: Array.from(new Set(<original array>))
+
+// Weak sets - prevent memory leaks relating to creating sets from arrays
+const weakSet = new WeakSet();
+// same as a set, but can only store object references
+
+// Maps
+const myMap = new Map();
+myMap.set("key", "value")
+myMap.get("key"); // value
+myMap.get("doesn't exist"); // undefined
+myMap.has("key") // true - checks keys
+// Like sets, we can create maps from [[nested, lists], [like, this]]
+// Also, WeakMaps : Maps :: WeakSets : Sets
+
+// Control Flow
+if (2 + 2 == 4) {
+    console.log("2 + 2 = 4.")
+}
+
+// Can add else statement
+if (1 + 1 == 2) {
+    console.log("1 + 1 = 2.")
+} else {
+    console.log("Reality is broken!!");
+}
+
+// Ternary operator
+let amIEven = 1;
+let evenMessage = `Number is ${amIEven % 2 == 0 ? "even" : "odd"}`;
+
+// Switch statements
+switch (amIEven) {
+    case 1:
+        console.log("Number is one");
+    case 2:
+        console.log("Number is two");
+    default:
+        console.log("Number is something else");
+}
+
+// While loops
+// Count up from 10
+let count = 10;
+while (count > 0) {
+    console.log(count);
+    count--;
+}
+// Will not run if condition is false. However:
+do {
+    console.log(count);
+    count--;
+} while (count > 0)
+// This will run once, even if the condition is false.
+
+// For loops
+//   Initial statement; Condition; Increment 
+for (let i = 0;         i < 10;    i++      ) {
+    console.log(i); // Count up from 0
+}
+// For loops for iterables:
+const iterateThroughMe = ["my", "list", "of", "words", "is", "back"];
+for (let word of iterateThroughMe) {
+    console.log(word); // print each word of list
+}
+// Looping through sets: order is the same in which they were added.
+// Order for maps: can use k of map.keys(), v of map.values(), or [k,v] of map.entries()
