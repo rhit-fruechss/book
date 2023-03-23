@@ -361,3 +361,89 @@ for (let word of iterateThroughMe) {
 }
 // Looping through sets: order is the same in which they were added.
 // Order for maps: can use k of map.keys(), v of map.values(), or [k,v] of map.entries()
+
+// Callback functions
+function f1(p1, callback) {
+    console.log(p1);
+    callback(p1);
+}
+
+function f2(p1) {
+    console.log(`Callback: ${p1}`);
+}
+
+f1(5,f2)
+
+// Sorting with callback
+function byNumber(a, b) {
+    return a - b; // >0 = greater, 0 = same, <0 = less
+}
+
+// iterators 
+[1,2,3,4,5].forEach((n) => { console.log(`Number: ${n}`); }); // prints 1-5
+[1,2,3,4,5].map( n => n * 2 ) // 2 4 6 8 10
+[1,2,3,4,5].reduce((acc, val) => val + acc, 0); // sum of 1-5, second parameter comes after callback'
+[1,2,3,4,5].filter((n) => n % 2 == 0) // keep only the even numbers - [2 4]
+
+// DOM manipulation
+document.getElementById("element-id");
+document.getElementsByTagName("p"); // array of all p tags
+document.getElementsByClassName("myclass") // get elements by class name
+
+// query selectors are better for this
+document.querySelector("#element-id");
+document.querySelectorAll("p"); // querySelectorAll for multiple
+document.querySelectorAll(".myclass");
+document.querySelectorAll("p.myclass"); // p elements with class myclass
+document.querySelectorAll("li:last-child"); // last list item in document
+
+// elements can have properties
+/* <ul id="my-element" class="myclass">
+ *   <li>One</li>
+ *   <li>Two</li>
+ *   <li>Three</li>
+ *   <li>Four</li>
+ * </ul>
+ */
+const myElement = document.querySelector("#my-element");
+myElement.children; // all children of the element with id my-element, myElement also has properties firstChild and lastChild
+myElement.firstChild.nextSibling; // second child (Two)
+myElement.firstChild.textContent; // return the text within first child, "One"
+
+// getting & setting attributes
+myElement.getAttribute("class"); // "myclass"
+myElement.setAttribute("class", "not-myclass");
+myElement.className = "myclass"; // set class name back, can be used as a getter
+myElement.classList; // a class list - can add a class, remove a class, toggle a class, or see if it contains a class
+// the class list is a LIVE collection and modifying it will modify the element on the original page.
+// this also applies to document.getElementsByClassName, document.getElementsById, document.querySelector, etc..
+
+// dynamic markup
+const newLi = document.createElement('li'); // returns a new element
+const newText = document.createTextNode('Text Here'); // returns a new text node
+newLi.appendChild(newText); // li now has text 'Text here'
+const newerLi = document.createElement('li');
+newLi.parentElement.insertBefore(
+    newerLi,
+    newLi
+); // adds another new list item before newLi
+newLi.parentElement.removeChild(newerLi); // remove textNode
+
+// Replace an element
+// <h1 id="header">Old Text</h1>
+const headerElement = document.querySelector("#header");
+const oldHeaderText = headerElement.firstChild;
+const newHeaderText = document.createTextNode("New Text");
+headerElement.replaceChild(newHeaderText, oldHeaderText);
+
+// another method that works:
+headerElement.innerHTML = "<span>Newer Text</span>";
+// NOTE: modifying innerHTML is not recommended for security reasons, especially with anything relating to user input.
+
+// modifying style
+// <span id="myspan" style="color: red;">Style Me</span>
+const mySpan = document.querySelector("#myspan");
+mySpan.style.display = 'none'; // make mySpan disappear
+mySpan.style.display = 'inline'; // put it back
+getComputedStyle(mySpan).color; // make it red
+// Note: when possible, prefer adding/removing classes over adding styles like this
