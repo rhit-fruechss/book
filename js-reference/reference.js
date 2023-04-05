@@ -447,3 +447,93 @@ mySpan.style.display = 'none'; // make mySpan disappear
 mySpan.style.display = 'inline'; // put it back
 getComputedStyle(mySpan).color; // make it red
 // Note: when possible, prefer adding/removing classes over adding styles like this
+
+// Async
+function timeoutCallback() {
+    console.log("Time's up!")
+}
+setTimeout(callback, 1000); // calls timeoutCallback after exactly one second (1000 ms)
+// Note: callbacks are functions passed as parameters that are called when something is completed.
+// In this case, after 1 second has finished passing.
+console.log("This will be called while the timer is still running, since setTimeout is asynchronous");
+
+// "Callback hell": when the program depends on a lot of callbacks and the code gets complicated.
+// Luckily, there's a solution - promises.
+
+const promise = new Promise( function handle(resolve, reject) {
+    let value = someLongComplicatedAsynchronousTask();
+    if (taskWasSuccessful) {
+        resolve(value);
+    } else {
+        reject(value);
+    }
+});
+// resolve() and reject() should return a value that we can do something with
+// Alternatively,
+promise.then(data => onSuccess(data), data => onFail(data));
+promise.then(data => onSuccess(data)).catch(data => onFail(data));
+// Note: promises.then and promises.catch are blocking, meaning that the rest of the code WILL wait for the promise to finish.
+// To settle callback hell:
+doFirstThing()
+    .then(doSecondThing)
+    .then(doThirdThing)
+    .catch(throwError);
+
+// Async functions: use "async" keyword before a function
+async function loadUrl(data) {
+    try {
+        const result = await longAsyncFunction(); // waits inside function, but doesn't cause function to block code
+        // do stuff with result
+    }
+    catch (error) {
+        // uh oh!
+        throw error;
+    }
+}
+
+// Generalized functions
+// Normal function:
+function mean(x,y) {
+    return (x+y)/2;
+}
+
+function mean(x,y,callback=null) {
+    let res = (x+y)/2;
+    if (callback) {
+        return callback(res);
+    }
+    return res;
+}
+
+mean(1, 3) // 2
+mean(1, 3, (x) => x + 1); // (1+3)/2 + 1 = 3
+
+// Functions that return functions
+function a(x) {
+    const z = 5;
+    function b(y) {
+        return x + y + z;
+    }
+    return b;
+}
+let func = a(5);
+func(5); // 15
+func(1); // 11
+
+// NOTE: the above function is a closure. The inner function has access to all three variables, even though z and x are in the outer function.
+// None of the three variables can be accessed outside of the closure.
+
+// Functions can modify values too:
+function multiplyBy2Outer() {
+    let i = 1;
+    function inside() {
+        i *= 2;
+        return i;
+    }
+    return inside;
+}
+
+const multiplyBy2 = multiplyBy2Outer();
+multiplyBy2(); // 2
+multiplyBy2(); // 4
+multiplyBy2(); // 8
