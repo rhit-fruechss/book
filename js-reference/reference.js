@@ -537,3 +537,67 @@ const multiplyBy2 = multiplyBy2Outer();
 multiplyBy2(); // 2
 multiplyBy2(); // 4
 multiplyBy2(); // 8
+
+// Ajax: Clients and servers
+// Client: computer the website is running on
+// Server: other computer that takes request and returns result to client
+// Javascript was designed to run on the client.
+// Ajax allows Javascript to run on the server
+
+// Fetching data:
+fetch("https://example.com/data")
+    .then(onFetchSuccess /* do something */)
+    .catch((reason) => null /* error handling */);
+
+function onFetchSuccess(response) {
+    if (response.ok) {
+        return response;
+    }
+    throw Error(response.statusText);
+}
+
+// Redirect:
+fetch("https://example.com/data")
+    .then((response) => response.redirect('https://example-2.com'))
+    .then(onFetchSuccess /* do something */)
+    .catch((reason) => null /* error handling */);
+
+// Transform into text
+fetch("https://example.com/data")
+    .then(response => response.text() ) // Convert response into text
+    .then(text => console.log(text))
+    .catch(error => null);
+
+// Can also use response.json() to get JSON, where Object.entries(response.json()) returns a new object of the response
+// Response object:
+const repsonse = new Response('OK!', {
+    ok: true,    // whether response was successful
+    status: 200, // http status code
+    statusText: 'OK', // depends on status code
+    type: 'cors', // I don't know what this one does
+    url: '/api' // url used for response
+})
+
+// Requests
+const request = new Request('https://example.com/data', {
+    method: 'GET', // request method
+    mode: 'cors',
+    redirect: 'follow',
+    cache: 'no-cache'
+});
+
+// Can be fetched: fetch(request).then(...).catch(...)
+// fetch also takes the same params as the Request class and knows to make a request:
+// > fetch('https://...', {...}).then(...).catch(...)
+
+// Headers: pass additional info about response
+const headers = new Headers({
+    'Content-Type': 'text/plain',
+    'Accept-Charset': 'utf-8',
+    'Accept-Encoding': 'gzip,deflate'
+})
+
+headers.has('Content-Type'); // true
+headers.get('Accept-Charset'); // 'utf-8'
+headers.set('Content-Type', 'application/json'); // sets content type to something else
+// Also has append, delete, keys, values, and entries. Entries is iterable.
